@@ -149,9 +149,9 @@ module Siberite
     private
 
     def extract_siberite_options!(opts)
-      siberite_opts, memcache_opts = opts.inject([{}, {}]) do |(kestrel, memcache), (key, opt)|
-        (SIBERITE_OPTIONS.include?(key) ? kestrel : memcache)[key] = opt
-        [kestrel, memcache]
+      siberite_opts, memcache_opts = opts.inject([{}, {}]) do |(siberite, memcache), (key, opt)|
+        (SIBERITE_OPTIONS.include?(key) ? siberite : memcache)[key] = opt
+        [siberite, memcache]
       end
       opts.replace(memcache_opts)
       siberite_opts
