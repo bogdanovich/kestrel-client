@@ -1,6 +1,6 @@
 module Siberite::Client::StatsHelper
   STATS_TIMEOUT    = 3
-  QUEUE_STAT_NAMES = %w{items bytes total_items logsize expired_items mem_items mem_bytes age discarded waiters open_transactions}
+  QUEUE_STAT_NAMES = %w{items open_transactions}
 
   def sizeof(queue)
     stat_info = stat(queue)
