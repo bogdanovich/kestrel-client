@@ -1,4 +1,4 @@
-module Kestrel
+module Siberite
   class Client
     class Unmarshal < Proxy
       def get(key, opts = {})

@@ -1,4 +1,4 @@
-module Kestrel::Client::StatsHelper
+module Siberite::Client::StatsHelper
   STATS_TIMEOUT    = 3
   QUEUE_STAT_NAMES = %w{items bytes total_items logsize expired_items mem_items mem_bytes age discarded waiters open_transactions}
 
@@ -59,7 +59,7 @@ module Kestrel::Client::StatsHelper
         socket.close
         break
       elsif defined?(RAILS_DEFAULT_LOGGER)
-        RAILS_DEFAULT_LOGGER.debug("KestrelClient#stats_for_server: Ignoring #{line}")
+        RAILS_DEFAULT_LOGGER.debug("SiberiteClient#stats_for_server: Ignoring #{line}")
       end
     end
 
@@ -110,7 +110,7 @@ module Kestrel::Client::StatsHelper
     if ! defined?(RUBY_ENGINE)
       # MRI 1.8, all other interpreters define RUBY_ENGINE, JRuby and
       # Rubinius should have no issues with timeout.
-      warn "WARNING: using the built-in Timeout class which is known to have issues when used for opening connections. Install the SystemTimer gem if you want to make sure the Kestrel client will not hang."
+      warn "WARNING: using the built-in Timeout class which is known to have issues when used for opening connections. Install the SystemTimer gem if you want to make sure the Siberite client will not hang."
     end
 
     require "timeout"

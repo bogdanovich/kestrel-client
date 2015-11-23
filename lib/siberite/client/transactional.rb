@@ -1,4 +1,4 @@
-class Kestrel::Client::Transactional < Kestrel::Client::Proxy
+class Siberite::Client::Transactional < Siberite::Client::Proxy
 
   # Raised when a caller attempts to use this proxy across
   # multiple queues.
@@ -24,7 +24,7 @@ class Kestrel::Client::Transactional < Kestrel::Client::Proxy
   ERROR_PROCESSING_RATE = 0.1
 
   # ==== Parameters
-  # client<Kestrel::Client>:: Client
+  # client<Siberite::Client>:: Client
   # max_retries<Integer>:: Number of times to retry a job before
   #                        giving up. Defaults to DEFAULT_RETRIES
   # error_rate<Float>:: Pct. of the time during 'normal'

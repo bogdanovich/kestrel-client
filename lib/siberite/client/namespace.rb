@@ -1,4 +1,4 @@
-module Kestrel
+module Siberite
   class Client
     class Namespace < Proxy
       def initialize(namespace, client)

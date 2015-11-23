@@ -1,6 +1,6 @@
 require 'yaml'
 
-module Kestrel
+module Siberite
   module Config
     class ConfigNotLoaded < StandardError; end
 

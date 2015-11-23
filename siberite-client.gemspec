@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'kestrel/client/version'
+require 'siberite/client/version'
 
 Gem::Specification.new do |s|
-  s.name = "kestrel-client"
-  s.version = Kestrel::VERSION
+  s.name = "siberite-client"
+  s.version = Siberite::VERSION
 
   s.authors = ["Matt Freels", "Rael Dornfest", "Anton Bogdanovich"]
-  s.summary = "Ruby Kestrel client"
-  s.description = "Ruby client for the Kestrel queue server"
+  s.summary = "Ruby Siberite client"
+  s.description = "Ruby client for the Siberite queue server"
   s.email = "anton@bogdanovich.co"
   s.license = "Apache-2"
   s.extra_rdoc_files = [

@@ -1,4 +1,4 @@
-module Kestrel
+module Siberite
   class Client
     class Envelope < Proxy
       attr_accessor :envelope_class

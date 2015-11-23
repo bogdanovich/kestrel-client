@@ -1,4 +1,4 @@
-module Kestrel
+module Siberite
   class Client
     class Proxy
       attr_reader :client

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe "Kestrel::Client::Blocking" do
+describe "Siberite::Client::Blocking" do
   describe "Instance Methods" do
     before do
-      @raw_kestrel_client = Kestrel::Client.new(*Kestrel::Config.default)
-      @kestrel = Kestrel::Client::Blocking.new(@raw_kestrel_client)
+      @raw_client = Siberite::Client.new(*Siberite::Config.default)
+      @client = Siberite::Client::Blocking.new(@raw_client)
     end
 
     describe "#get" do
@@ -13,15 +13,15 @@ describe "Kestrel::Client::Blocking" do
       end
 
       it "blocks on a get until the get works" do
-        mock(@raw_kestrel_client).
+        mock(@raw_client).
           get(@queue) { nil }.times(5).then.get(@queue) { :mcguffin }
-        @kestrel.get(@queue).should == :mcguffin
+        @client.get(@queue).should == :mcguffin
       end
 
       describe "#get_without_blocking" do
         it "does not block" do
-          mock(@raw_kestrel_client).get(@queue) { nil }
-          @kestrel.get_without_blocking(@queue).should be_nil
+          mock(@raw_client).get(@queue) { nil }
+          @client.get_without_blocking(@queue).should be_nil
         end
       end
     end

@@ -1,19 +1,19 @@
 require 'forwardable'
 
-module Kestrel
+module Siberite
   class Client
-    require 'kestrel/client/stats_helper'
+    require 'siberite/client/stats_helper'
 
-    autoload :Proxy, 'kestrel/client/proxy'
-    autoload :Envelope, 'kestrel/client/envelope'
-    autoload :Blocking, 'kestrel/client/blocking'
-    autoload :Partitioning, 'kestrel/client/partitioning'
-    autoload :Unmarshal, 'kestrel/client/unmarshal'
-    autoload :Namespace, 'kestrel/client/namespace'
-    autoload :Json, 'kestrel/client/json'
-    autoload :Transactional, "kestrel/client/transactional"
+    autoload :Proxy, 'siberite/client/proxy'
+    autoload :Envelope, 'siberite/client/envelope'
+    autoload :Blocking, 'siberite/client/blocking'
+    autoload :Partitioning, 'siberite/client/partitioning'
+    autoload :Unmarshal, 'siberite/client/unmarshal'
+    autoload :Namespace, 'siberite/client/namespace'
+    autoload :Json, 'siberite/client/json'
+    autoload :Transactional, "siberite/client/transactional"
 
-    KESTREL_OPTIONS = [:gets_per_server, :exception_retry_limit, :get_timeout_ms].freeze
+    SIBERITE_OPTIONS = [:gets_per_server, :exception_retry_limit, :get_timeout_ms].freeze
 
     DEFAULT_OPTIONS = {
       :retry_timeout => 0,
@@ -44,7 +44,7 @@ module Kestrel
     include StatsHelper
 
     attr_accessor :servers, :options
-    attr_reader :current_queue, :kestrel_options, :current_server
+    attr_reader :current_queue, :siberite_options, :current_server
 
     def_delegators :@write_client, :add, :append, :cas, :decr, :incr, :get_orig, :prepend
 
@@ -52,10 +52,10 @@ module Kestrel
       opts = servers.last.is_a?(Hash) ? servers.pop : {}
       opts = DEFAULT_OPTIONS.merge(opts)
 
-      @kestrel_options = extract_kestrel_options!(opts)
-      @default_get_timeout = kestrel_options[:get_timeout_ms]
-      @gets_per_server = kestrel_options[:gets_per_server]
-      @exception_retry_limit = kestrel_options[:exception_retry_limit]
+      @siberite_options = extract_siberite_options!(opts)
+      @default_get_timeout = siberite_options[:get_timeout_ms]
+      @gets_per_server = siberite_options[:gets_per_server]
+      @exception_retry_limit = siberite_options[:exception_retry_limit]
       @counter = 0
       @shuffle = true
 
@@ -148,13 +148,13 @@ module Kestrel
 
     private
 
-    def extract_kestrel_options!(opts)
-      kestrel_opts, memcache_opts = opts.inject([{}, {}]) do |(kestrel, memcache), (key, opt)|
-        (KESTREL_OPTIONS.include?(key) ? kestrel : memcache)[key] = opt
+    def extract_siberite_options!(opts)
+      siberite_opts, memcache_opts = opts.inject([{}, {}]) do |(kestrel, memcache), (key, opt)|
+        (SIBERITE_OPTIONS.include?(key) ? kestrel : memcache)[key] = opt
         [kestrel, memcache]
       end
       opts.replace(memcache_opts)
-      kestrel_opts
+      siberite_opts
     end
 
     def shuffle_if_necessary!(key)

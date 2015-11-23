@@ -1,6 +1,6 @@
 require 'json'
 
-module Kestrel
+module Siberite
   class Client
     class Json < Proxy
       def get(*args)

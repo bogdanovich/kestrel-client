@@ -1,4 +1,4 @@
-module Kestrel
+module Siberite
   class Client
     class Partitioning < Proxy
 
