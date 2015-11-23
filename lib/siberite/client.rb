@@ -18,9 +18,9 @@ module Siberite
     DEFAULT_OPTIONS = {
       :retry_timeout => 0,
       :exception_retry_limit => 5,
-      :timeout => 0.25,
+      :timeout => 0,
       :gets_per_server => 100,
-      :get_timeout_ms => 10
+      :get_timeout_ms => false
     }.freeze
 
     # Exceptions which are connection failures we retry after

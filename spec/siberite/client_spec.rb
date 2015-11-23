@@ -19,14 +19,14 @@ describe Siberite::Client do
 
       it "gets from the same server :gets_per_server times" do
         client = @client.instance_variable_get(:@read_client)
-        mock(client).get("a_queue/t=10", true).times(102).returns('item')
+        mock(client).get("a_queue", true).times(102).returns('item')
 
         102.times { @client.get("a_queue") }
       end
 
       it "gets from a different server when the last result was nil" do
         client = @client.instance_variable_get(:@read_client)
-        mock(client).get("a_queue/t=10", true).returns(nil).twice
+        mock(client).get("a_queue", true).returns(nil).twice
 
         2.times { @client.get("a_queue") }
       end
@@ -113,8 +113,8 @@ describe Siberite::Client do
         @client.set("test-queue-name", 97)
 
         stats = @client.stats
-        %w{uptime time version curr_items total_items bytes curr_connections total_connections
-           cmd_get cmd_set get_hits get_misses bytes_read bytes_written queues}.each do |stat|
+        %w{uptime time version curr_connections total_connections
+           cmd_get cmd_set queues}.each do |stat|
           stats[stat].should_not be_nil
         end
 
@@ -133,7 +133,9 @@ describe Siberite::Client do
         stub(@client).servers { [server] * 2 }
         stats_for_two_servers = @client.stats
 
-        stats_for_two_servers['bytes'].should == 2*stats_for_one_server['bytes']
+        expect(stats_for_two_servers['cmd_get']).to eq(
+          2 * stats_for_one_server['cmd_get']
+        )
       end
     end
 
