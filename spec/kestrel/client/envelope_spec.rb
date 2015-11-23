@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 class Envelope
   class << self; attr_accessor :unwraps end

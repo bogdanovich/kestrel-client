@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Kestrel::Client::Unmarshal do
   describe "Instance Methods" do
@@ -39,14 +39,17 @@ describe Kestrel::Client::Unmarshal do
 
     describe "#isMarshaled" do
       it "should foo" do
-        @kestrel.is_marshaled?("foo").should be_false
-        @kestrel.is_marshaled?(Marshal.dump("foo")).should be_true
+        @kestrel.is_marshaled?("foo").should be_falsey
+        @kestrel.is_marshaled?(Marshal.dump("foo")).should be_truthy
+        @kestrel.is_marshaled?(Marshal.dump("foo")).should be_truthy
 
-        @kestrel.is_marshaled?({}).should be_false
-        @kestrel.is_marshaled?(Marshal.dump({})).should be_true
+        @kestrel.is_marshaled?({}).should be_falsey
+        @kestrel.is_marshaled?(Marshal.dump({})).should be_truthy
+        @kestrel.is_marshaled?(Marshal.dump({})).should be_truthy
 
-        @kestrel.is_marshaled?(BadObject.new).should be_false
-        @kestrel.is_marshaled?(Marshal.dump(BadObject.new)).should be_true
+        @kestrel.is_marshaled?(BadObject.new).should be_falsey
+        @kestrel.is_marshaled?(Marshal.dump(BadObject.new)).should be_truthy
+        @kestrel.is_marshaled?(Marshal.dump(BadObject.new)).should be_truthy
       end
     end
   end

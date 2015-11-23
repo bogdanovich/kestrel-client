@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Kestrel::Client do
   describe "Instance Methods" do
@@ -20,7 +20,6 @@ describe Kestrel::Client do
       it "gets from the same server :gets_per_server times" do
         client = @kestrel.instance_variable_get(:@read_client)
         mock(client).get("a_queue/t=10", true).times(102).returns('item')
-        mock(client).reset.with(anything).once
 
         102.times { @kestrel.get("a_queue") }
       end
@@ -28,7 +27,6 @@ describe Kestrel::Client do
       it "gets from a different server when the last result was nil" do
         client = @kestrel.instance_variable_get(:@read_client)
         mock(client).get("a_queue/t=10", true).returns(nil).twice
-        mock(client).reset.with(anything).once
 
         2.times { @kestrel.get("a_queue") }
       end
@@ -98,7 +96,7 @@ describe Kestrel::Client do
 
         lambda do
           @kestrel.send(:with_retries) { @kestrel.set("a_queue", "foo") }
-        end.should_not raise_error(Memcached::SystemError)
+        end.should_not raise_error
       end
 
       it "does not catch unknown errors" do
@@ -143,7 +141,9 @@ describe Kestrel::Client do
       it "get stats for single queue" do
         @kestrel.set(queue = "test-queue-name", 97)
         all_stats = @kestrel.stats
-        @kestrel.stat(queue).should == all_stats['queues'][queue]
+        single_queue_stats = @kestrel.stat(queue).except("age")
+
+        expect(single_queue_stats).to eq all_stats['queues'][queue].except("age")
       end
     end
 

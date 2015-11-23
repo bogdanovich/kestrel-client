@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Kestrel::Config do
   before do
@@ -9,10 +9,10 @@ describe Kestrel::Config do
   describe "load" do
     it "loads a yaml file" do
       Kestrel::Config.config = nil
-      lambda { Kestrel::Config.default }.should raise_error(Kestrel::Config::ConfigNotLoaded)
+      lambda { Kestrel::Config.default }.should raise_error
 
       Kestrel::Config.load TEST_CONFIG_FILE
-      lambda { Kestrel::Config.default }.should_not raise_error(Kestrel::Config::ConfigNotLoaded)
+      lambda { Kestrel::Config.default }.should_not raise_error
     end
   end
 

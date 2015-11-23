@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Kestrel::Client::Json do
   describe "Instance Methods" do

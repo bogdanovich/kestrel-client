@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Kestrel::Client::Namespace do
   describe "Instance Methods" do

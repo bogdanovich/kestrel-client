@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe "Kestrel::Client::Transactional" do
    before do
@@ -173,7 +173,7 @@ describe "Kestrel::Client::Transactional" do
           job.retries.should == 1
           job.job.should == :mcmuffin
         end
-        @kestrel.retry.should be_true
+        @kestrel.retry.should be_truthy
       end
 
       it "allows specification of the job to retry" do
@@ -181,7 +181,7 @@ describe "Kestrel::Client::Transactional" do
           job.retries.should == 1
           job.job.should == :revised_mcmuffin
         end
-        @kestrel.retry(:revised_mcmuffin).should be_true
+        @kestrel.retry(:revised_mcmuffin).should be_truthy
       end
 
       it "increments the retry count and re-enqueues the retried job" do
@@ -196,7 +196,7 @@ describe "Kestrel::Client::Transactional" do
         end
 
         @kestrel.get(@queue)
-        @kestrel.retry.should be_true
+        @kestrel.retry.should be_truthy
       end
 
       it "does not enqueue the retried job after too many tries" do
