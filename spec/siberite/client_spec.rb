@@ -81,6 +81,51 @@ describe Siberite::Client do
       end
     end
 
+    describe "#get_open" do
+      it "opens a reliable read" do
+        @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
+        @client.set(@queue, "item_1")
+        @client.set(@queue, "item_2")
+        expect(@client.get_open(@queue)).to eq "item_1"
+        expect{ @client.get(@queue) }.to raise_error Memcached::ClientError
+        expect(@client.get_open(@queue)).to eq "item_1"
+      end
+    end
+
+    describe "#get_close" do
+      it "closes a reliable read" do
+        @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
+        @client.set(@queue, "item_1")
+        @client.set(@queue, "item_2")
+        expect(@client.get_open(@queue)).to eq "item_1"
+        expect{ @client.get_close(@queue) }.to_not raise_error
+        expect(@client.get_open(@queue)).to eq "item_2"
+      end
+    end
+
+    describe "#get_close_open" do
+      it "closes a reliable read" do
+        @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
+        @client.set(@queue, "item_1")
+        @client.set(@queue, "item_2")
+        expect(@client.get_open(@queue)).to eq "item_1"
+        expect{ @client.get(@queue) }.to raise_error Memcached::ClientError
+        expect(@client.get_open(@queue)).to eq "item_1"
+        expect(@client.get_close_open(@queue)).to eq "item_2"
+      end
+    end
+
+    describe "#get_abort" do
+      it "aborts a reliable read" do
+        @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
+        @client.set(@queue, "item_1")
+        @client.set(@queue, "item_2")
+        expect(@client.get_open(@queue)).to eq "item_1"
+        expect{ @client.get_abort(@queue) }.to_not raise_error
+        expect(@client.get(@queue)).to eq "item_1"
+      end
+    end
+
     describe "#with_retries" do
       it "retries a specified number of times" do
         mock(@client).set(anything, anything) { raise Memcached::SystemError }.times(6)
