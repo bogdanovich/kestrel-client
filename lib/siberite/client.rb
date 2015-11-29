@@ -143,7 +143,23 @@ module Siberite
     end
 
     def peek(queue)
-      get queue, :peek => true
+      get queue, peek: true
+    end
+
+    def get_open(queue)
+      get queue, open: true
+    end
+
+    def get_close(queue)
+      get_from_last queue, close: true
+    end
+
+    def get_close_open(queue)
+      get_from_last queue, close: true, open: true
+    end
+
+    def get_abort(queue)
+      get_from_last queue, abort: true
     end
 
     private
@@ -173,7 +189,7 @@ module Siberite
     end
 
     def extract_queue_commands(opts)
-      commands = [:open, :close, :abort, :peek].select do |key|
+      commands = [:close, :open, :abort, :peek].select do |key|
         opts[key]
       end
 

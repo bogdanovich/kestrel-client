@@ -28,9 +28,23 @@ See the [rdoc for Memcached](http://blog.evanweaver.com/files/doc/fauna/memcache
 ```ruby
 require 'siberite'
 
-@queue = Siberite::Client.new('localhost:22133')
-@queue.set('a_queue', 'foo')
-@queue.get('a_queue') # => 'foo'
+queue = Siberite::Client.new('localhost:22133')
+queue.set('a_queue', 'foo')
+queue.set('a_queue', 'bar')
+queue.set('a_queue', 'baz')
+
+queue.get('a_queue') # => 'foo'
+
+# opens a reliable read
+queue.get_open('a_queue') # => 'bar'
+queue.get_close('a_queue')
+
+# acknowledges previously opened read and opens a new one)
+queue.get_close_open('a_queue') # => 'baz'
+
+# raw format, skip marshalling
+queue.set('a_queue', [1,2,3].to_json, 0, raw: true)
+queue.get('a_queue', raw: true) # => "[1,2,3]"
 ```
 
 ## Client Proxies
@@ -38,12 +52,29 @@ require 'siberite'
 siberite-client comes with a number of decorators that change the behavior of the raw client.
 
 ```ruby
-@queue = Siberite::Client.new('localhost:22133')
-@queue.get('empty_queue') # => nil
+client = Siberite::Client.new('localhost:22133')
+client.get('empty_queue') # => nil
 
-@queue = Siberite::Client::Blocking.new(Siberite::Client.new('localhost:22133'))
-@queue.get('empty_queue') # does not return until it pulls something from the queue
+# Blocking client
+queue = Siberite::Client::Blocking.new(client)
+queue.get('empty_queue') # does not return until it pulls something from the queue
+
+# Namespaced client
+queue = Siberite::Client::Namespace.new('foo', client)
+queue.set('work', 1) # adds message to foo:work queue
+
+# Partitioned client
+client_1 = Siberite::Client.new('siberite01.example.com:22133')
+client_2 = Siberite::Client.new('siberite02.example.com:22133')
+default_client = Siberite::Client.new('siberite03.example.com:22133')
+
+client = Siberite::Client::Partitioning.new(
+    'queue1' => client_1,
+    ['queue2', 'queue3'] => client_2,
+    default: default_client
+)
 ```
+
 
 ## Configuration Management
 
@@ -53,7 +84,7 @@ Siberite::Config provides some tools for pulling queue config out of a YAML conf
 Siberite::Config.load 'path/to/siberite.yml'
 Siberite::Config.environment = 'production' # defaults to development
 
-@queue = Siberite::Config.new_client
+queue = Siberite::Config.new_client
 ```
 
 This tells siberite-client to look for `path/to/siberite.yml`, and pull the client configuration out of
