@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1.0
+  - 2.2.0
+
+install:
+  - wget https://github.com/bogdanovich/siberite/releases/download/v0.6/siberite-0.6-linux_x86_64.tgz -O /tmp/siberite.tar.gz
+  - tar -xvf /tmp/siberite.tar.gz
+  - /tmp/siberite/siberite > siberite.log 2>&1 &
