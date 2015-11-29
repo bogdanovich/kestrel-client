@@ -30,6 +30,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", "~> 3.2"
   s.add_development_dependency "rr", "~> 1.1"
   s.add_development_dependency "activesupport", "> 3.1"
-  s.add_development_dependency "bundler", "~> 1.7"
+  s.add_development_dependency "bundler"
   s.add_development_dependency "rake", "~> 10.0"
 end
