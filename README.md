@@ -1,3 +1,4 @@
+[![License][License-Image]][License-Url] [![Build][Build-Status-Image]][Build-Status-Url] [![Gem Version][Gem-Image]][Gem-Url]
 ## Talk to Siberite queue server from Ruby
 
 Siberite-client is a library that allows you to talk to a [Siberite](http://github.com/bogdanovich/siberite) queue server from ruby.
@@ -77,3 +78,10 @@ development:
     - localhost:22133
   show_backtraces: true
 ```
+
+[License-Url]: http://opensource.org/licenses/Apache-2.0
+[License-Image]: https://img.shields.io/hexpm/l/plug.svg
+[Build-Status-Url]: https://travis-ci.org/bogdanovich/siberite-ruby
+[Build-Status-Image]: https://travis-ci.org/bogdanovich/siberite-ruby.svg?branch=master
+[Gem-Image]: https://badge.fury.io/rb/siberite-client.svg
+[Gem-Url]: https://rubygems.org/gems/siberite-client

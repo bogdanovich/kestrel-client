@@ -9,10 +9,12 @@ describe Siberite::Config do
   describe "load" do
     it "loads a yaml file" do
       Siberite::Config.config = nil
-      lambda { Siberite::Config.default }.should raise_error
+      expect {
+        Siberite::Config.default
+      }.to raise_error Siberite::Config::ConfigNotLoaded
 
       Siberite::Config.load TEST_CONFIG_FILE
-      lambda { Siberite::Config.default }.should_not raise_error
+      expect { Siberite::Config.default }.to_not raise_error
     end
   end
 
