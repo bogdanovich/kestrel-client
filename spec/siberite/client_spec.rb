@@ -96,10 +96,11 @@ describe Siberite::Client do
       it "closes a reliable read" do
         @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
         @client.set(@queue, "item_1")
-        @client.set(@queue, "item_2")
+        @client.set(@queue, "item_2", 0, raw: true)
+        @client.set(@queue, "item_3")
         expect(@client.get_open(@queue)).to eq "item_1"
         expect{ @client.get_close(@queue) }.to_not raise_error
-        expect(@client.get_open(@queue)).to eq "item_2"
+        expect(@client.get_open(@queue, raw: true)).to eq "item_2"
       end
     end
 
@@ -107,11 +108,11 @@ describe Siberite::Client do
       it "closes a reliable read" do
         @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
         @client.set(@queue, "item_1")
-        @client.set(@queue, "item_2")
+        @client.set(@queue, "item_2", 0, raw: true)
         expect(@client.get_open(@queue)).to eq "item_1"
         expect{ @client.get(@queue) }.to raise_error Memcached::ClientError
         expect(@client.get_open(@queue)).to eq "item_1"
-        expect(@client.get_close_open(@queue)).to eq "item_2"
+        expect(@client.get_close_open(@queue, raw: true)).to eq "item_2"
       end
     end
 
@@ -123,6 +124,18 @@ describe Siberite::Client do
         expect(@client.get_open(@queue)).to eq "item_1"
         expect{ @client.get_abort(@queue) }.to_not raise_error
         expect(@client.get(@queue)).to eq "item_1"
+      end
+    end
+
+    describe "#get with_group" do
+      it "aborts a reliable read" do
+        @queue = "some_random_queue_#{Time.now.to_i}_#{rand(10000)}"
+        @client.set(@queue, "item_1")
+        @client.set(@queue, "item_2")
+        expect(@client.get(@queue, group: "1")).to eq "item_1"
+        expect(@client.get(@queue, group: "2")).to eq "item_1"
+        expect(@client.get(@queue, group: "1")).to eq "item_2"
+        expect(@client.get(@queue, group: "2")).to eq "item_2"
       end
     end
 

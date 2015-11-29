@@ -42,7 +42,18 @@ queue.get_close('a_queue')
 # acknowledges previously opened read and opens a new one)
 queue.get_close_open('a_queue') # => 'baz'
 
-# raw format, skip marshalling
+# multiple consumer groups
+queue.set('a_queue', 'foo')
+queue.set('a_queue', 'bar')
+
+queue.get('a_queue', group: "group_1") # => 'foo'
+queue.get('a_queue', group: "group_2") # => 'foo'
+
+queue.get('a_queue', group: "group_1") # => 'bar'
+queue.get('a_queue', group: "group_2") # => 'bar'
+
+
+# raw format, skip marshaling
 queue.set('a_queue', [1,2,3].to_json, 0, raw: true)
 queue.get('a_queue', raw: true) # => "[1,2,3]"
 ```

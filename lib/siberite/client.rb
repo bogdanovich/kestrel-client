@@ -142,20 +142,20 @@ module Siberite
       count
     end
 
-    def peek(queue)
-      get queue, peek: true
+    def peek(queue, opts = {})
+      get queue, peek: true, **opts
     end
 
-    def get_open(queue)
-      get queue, open: true
+    def get_open(queue, opts = {})
+      get queue, open: true, **opts
     end
 
-    def get_close(queue)
-      get_from_last queue, close: true
+    def get_close(queue, opts = {})
+      get_from_last queue, close: true, **opts
     end
 
-    def get_close_open(queue)
-      get_from_last queue, close: true, open: true
+    def get_close_open(queue, opts = {})
+      get_from_last queue, close: true, open: true, **opts
     end
 
     def get_abort(queue)
@@ -197,7 +197,9 @@ module Siberite
         commands << "t=#{timeout}"
       end
 
-      commands.map { |c| "/#{c}" }.join('')
+      group = (opts[:group]) ? "." + opts[:group] : ""
+      
+      group + commands.map { |c| "/#{c}" }.join('')
     end
 
     def with_retries #:nodoc:
